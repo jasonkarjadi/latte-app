@@ -1,4 +1,4 @@
-const MyIndex = () => {
+const ProductsPage = () => {
   return (
     <>
       <h1>LATTE</h1>
@@ -7,4 +7,4 @@ const MyIndex = () => {
   );
 };
 
-export default MyIndex;
+export default ProductsPage;
