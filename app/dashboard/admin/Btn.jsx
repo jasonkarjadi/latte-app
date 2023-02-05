@@ -1,20 +1,20 @@
 "use client";
 
-import { Button } from "@chakra-ui/react";
+import { Link } from "@chakra-ui/react";
+import NextLink from "next/link";
 
-const Btn = ({ children }) => {
+const Btn = ({ children, href }) => {
   return (
-    <Button
-      _hover={{ bg: "#D0B8A8" }}
-      bg={"#F8EDE3"}
-      size="md"
-      height="55px"
-      w={"full"}
-      borderRadius="none"
-      borderColor="#85586F"
+    <Link
+      as={NextLink}
+      href={href}
+      _hover={{ bgColor: "#F8EDE3" }}
+      h={14}
+      fontWeight="bold"
+      p={4}
     >
       {children}
-    </Button>
+    </Link>
   );
 };
 

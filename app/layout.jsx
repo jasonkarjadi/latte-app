@@ -1,30 +1,28 @@
 "use client";
 
-import { Box, ChakraProvider, Heading, Text, VStack } from "@chakra-ui/react";
-import NextLink from "next/link";
+import { Center, ChakraProvider, Flex, Heading, Text } from "@chakra-ui/react";
+import { poppins } from "../fonts";
 
 const RootLayout = ({ children }) => {
   return (
     <html lang="en">
       <body>
         <ChakraProvider>
-          <VStack h={"100vh"} spacing="none">
-            <Box as="header" h={"40px"} w={"full"} bgColor="#eadede">
-              <Heading marginLeft={"15px"}>Latte</Heading>
-            </Box>
-            {children}
-            <Box
-              as={"footer"}
-              textAlign={"center"}
-              h={"40px"}
-              w={"full"}
-              bgColor="#eadede"
-            >
-              <Text fontSize={"12px"}>
-                © Purwadhika WD Latte Team 2023.All right reserved
+          <Flex h="100vh" flexDir="column" className={poppins.className}>
+            <Flex as="header" h={10} bgColor="#eadede" px={4}>
+              <Heading fontSize="xx-large" className={poppins.className}>
+                latte
+              </Heading>
+            </Flex>
+            <Center as="main" flex={1} bgColor="#F8EDE3">
+              {children}
+            </Center>
+            <Center as="footer" h={10} bgColor="#eadede">
+              <Text fontSize="small">
+                © Purwadhika WD Latte Team 2023. All rights reserved
               </Text>
-            </Box>
-          </VStack>
+            </Center>
+          </Flex>
         </ChakraProvider>
       </body>
     </html>

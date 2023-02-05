@@ -1,40 +1,43 @@
 "use client";
 
-import { Box, Container, Flex, Input, Button, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+} from "@chakra-ui/react";
+import { poppins } from "../fonts";
 
 const RootPage = () => {
   return (
-    <Box flex={1} bgColor="#F8EDE3" w="full">
-      <Flex
-        width={"800px"}
-        height={"600px"}
-        my={"40px"}
-        mx={"auto"}
-        justifyContent={"center"}
-        alignItems={"stretch"}
-      >
-        <Box flex={1} marginRight={"10px"} bgColor={"white"} px={"40px"}>
-          <h1>hero</h1>
-        </Box>
-        <Box
-          flex={1}
-          paddingTop={"20px"}
-          px={"40px"}
-          textAlign={"center"}
-          marginLeft={"10px"}
-          bgColor={"white"}
-          fontSize={"4xl"}
-          fontWeight={"bold"}
-        >
-          <Heading padding={"30px"}>Latte</Heading>
-          <Input placeholder="Username"></Input>
-          <Input placeholder="Password"></Input>
-          <Button px={"30px"} colorScheme="blue">
-            Login
-          </Button>
-        </Box>
+    <>
+      <Flex h="600px">
+        <Flex flexDir="column" w={80} bgColor="white" mr={8}></Flex>
+        <Flex flexDir="column" w={80} p={8} textAlign="center" bgColor="white">
+          <Heading mb={8} className={poppins.className}>
+            welcome
+          </Heading>
+          <Box as="form" action="/api/sessions" method="POST">
+            <FormControl>
+              <FormLabel mr="0">
+                <Input type="text" name="password" placeholder="Username" />
+              </FormLabel>
+            </FormControl>
+            <FormControl>
+              <FormLabel mr="0">
+                <Input type="password" name="password" placeholder="Password" />
+              </FormLabel>
+            </FormControl>
+            <Button type="submit" px={8} mt={4} colorScheme="blue">
+              Login
+            </Button>
+          </Box>
+        </Flex>
       </Flex>
-    </Box>
+    </>
   );
 };
 
