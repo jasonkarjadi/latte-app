@@ -20,10 +20,18 @@ const RootPage = () => {
           <Heading mb={8} className={poppins.className}>
             welcome
           </Heading>
-          <Box as="form" action="/api/sessions" method="POST">
+          <Box
+            as="form"
+            action="http://localhost:2000/auth/login"
+            method="POST"
+          >
             <FormControl>
               <FormLabel mr="0">
-                <Input type="text" name="password" placeholder="Username" />
+                <Input
+                  type="text"
+                  name="userLog"
+                  placeholder="Username / Email / Phone Number"
+                />
               </FormLabel>
             </FormControl>
             <FormControl>
