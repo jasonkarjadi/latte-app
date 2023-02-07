@@ -1,7 +1,7 @@
 "use client";
 
-import { Box, Flex } from "@chakra-ui/react";
-import Btn from "./Btn.jsx";
+import { Flex } from "@chakra-ui/react";
+import NavLink from "./NavLink";
 
 const AdminLayout = ({ children }) => {
   return (
@@ -14,11 +14,13 @@ const AdminLayout = ({ children }) => {
           bgColor="#D0B8A8"
           borderRight="solid 1px #85586F"
         >
-          <Btn href="/dashboard/admin/products">Products</Btn>
-          <Btn href="/dashboard/admin/users">Users</Btn>
-          <Btn href="/dashboard/admin/sales">Sales</Btn>
+          <NavLink href="/dashboard/admin/products">Products</NavLink>
+          <NavLink href="/dashboard/admin/users">Employees</NavLink>
+          <NavLink href="/dashboard/admin/sales">Sales</NavLink>
         </Flex>
-        <Box flex={1}>{children}</Box>
+        <Flex flex={1} flexDir="column" p={6} justifyContent="space-around">
+          {children}
+        </Flex>
       </Flex>
     </>
   );
