@@ -15,15 +15,15 @@ const RootPage = () => {
   return (
     <>
       <Flex h="600px">
-        <Flex flexDir="column" w={80} bgColor="white" mr={8}></Flex>
-        <Flex flexDir="column" w={80} p={8} textAlign="center" bgColor="white">
+        <Flex flexDir="column" w={96} bgColor="white" mr={8}></Flex>
+        <Flex flexDir="column" w={96} p={8} textAlign="center" bgColor="white">
           <Heading mb={8} className={poppins.className}>
             welcome
           </Heading>
           <Box
             as="form"
             action="http://localhost:2000/auth/login"
-            method="POST"
+            method="post"
           >
             <FormControl>
               <FormLabel mr="0">
