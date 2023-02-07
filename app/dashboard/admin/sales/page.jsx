@@ -1,8 +1,19 @@
+"use client";
+
+import { Heading, Input, Text } from "@chakra-ui/react";
+
 const SalesPage = () => {
   return (
     <>
-      <h1>LATTE</h1>
-      <p>Hello World!</p>
+      <Heading>Good Job , Dear </Heading>
+      <Text>Here's what happening in your sales today !</Text>
+
+      <Input
+        placeholder="Select Date and Time"
+        size="md"
+        type="datetime-local"
+      />
+      <Input type={"submit"} />
     </>
   );
 };
