@@ -8,16 +8,16 @@ const RootModal2 = () => {
       <Box
         w="500px"
         h="200px"
-        bgColor={"#D0B8A8"}
-        justifyContent={"center"}
-        margin={"80px auto"}
-        padding={"30px"}
-        borderRadius={"10px"}
+        bgColor="#D0B8A8"
+        justifyContent="center"
+        m="80px auto"
+        p="30px"
+        borderRadius="10px"
       >
-        <Text fontSize="xl" textAlign={"center"}>
+        <Text fontSize="xl" textAlign="center">
           Are you sure to delete [category name]
         </Text>
-        <Stack direction="row" spacing={"250px"} marginTop={"40px"}>
+        <Stack spacing="250px" mt="40px">
           <Button variant="ghost">Cancel</Button>
           <Button mr="0" colorScheme="red" variant="solid">
             Confirm
