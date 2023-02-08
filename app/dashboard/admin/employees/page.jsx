@@ -6,9 +6,9 @@ import RoleTable from "./RoleTable";
 const UsersPage = () => {
   return (
     <>
-      <Box margin={("200", "50")}>
+      <Box m={("200", "50")}>
         <TableContainer>
-          <Table variant={"striped"} colorScheme={"#85586F"}>
+          <Table variant="striped" colorScheme="#85586F">
             <Thead>
               <Tr>
                 <Th>#</Th>
