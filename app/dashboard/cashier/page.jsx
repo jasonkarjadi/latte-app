@@ -1,8 +1,11 @@
+import Payment from "./Payment";
+// import Sidebar from "./Sidebar";
+
 const CashierPage = () => {
   return (
     <>
-      <h1>LATTE</h1>
-      <p>Hello World!</p>
+      <Payment></Payment>
+      {/* <Sidebar></Sidebar> */}
     </>
   );
 };
