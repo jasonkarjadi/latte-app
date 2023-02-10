@@ -5,6 +5,8 @@ import {
   ButtonGroup,
   Flex,
   Grid,
+  HStack,
+  IconButton,
   Table,
   TableContainer,
   Tbody,
@@ -15,6 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import ProductCard from "../../ProductCard";
+import CreateButton from "../CreateButton";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 const ProductsPage = () => {
   const [isProducts, setIsProducts] = useState(true);
@@ -49,9 +53,7 @@ const ProductsPage = () => {
             Categories
           </Button>
         </ButtonGroup>
-        <Button onClick={() => {}} colorScheme="orange">
-          Create +
-        </Button>
+        <CreateButton />
       </Flex>
       {isProducts ? (
         <>
@@ -65,10 +67,19 @@ const ProductsPage = () => {
               <ProductCard key={id} name={name} src={image} price={price} />
             ))}
           </Grid>
-          <Flex justifyContent="space-between">
-            <Button onClick={() => {}}>&lt;</Button>
-            <Button onClick={() => {}}>&gt;</Button>
-          </Flex>
+          <HStack mx="auto">
+            <IconButton
+              icon={<MdChevronLeft />}
+              aria-label="previous list of products"
+              onClick={() => {}}
+            />
+            {/* Numbered Link to Pages */}
+            <IconButton
+              icon={<MdChevronRight />}
+              aria-label="next list of products"
+              onClick={() => {}}
+            />
+          </HStack>
         </>
       ) : (
         <TableContainer>
