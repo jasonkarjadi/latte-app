@@ -7,38 +7,64 @@ import {
   Grid,
   HStack,
   IconButton,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { getAccessToken, setAccessToken } from "../../../../accessToken";
 import ProductCard from "../../ProductCard";
 import CreateButton from "../CreateButton";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import Sidebar from "../Sidebar";
+import StripedTable from "../StripedTable";
+import { useSearchParams } from "next/navigation";
 
 const ProductsPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState(null);
   const [isProducts, setIsProducts] = useState(true);
-  const [products, setProducts] = useState([]);
+  const [pageQuery, setPageQuery] = useState(1);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("http://localhost:2000/product/list");
-        const data = await res.json();
-        setProducts(data.result);
+        setIsLoading(true);
+        setAccessToken(null);
+        const accessToken = await getAccessToken();
+        const res = await fetch(
+          isProducts
+            ? `http://localhost:2000/product/list?page=${pageQuery}`
+            : "http://localhost:2000/category/list",
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        const resBody = await res.json();
+        console.log(resBody);
+        setData(resBody);
       } catch (err) {
         console.error(err);
+      } finally {
+        setIsLoading(false);
       }
     })();
-  }, []);
+  }, [isProducts, pageQuery]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  };
 
   return (
     <>
-      <Flex justifyContent="space-between">
+      <Sidebar>
         <ButtonGroup isAttached>
           <Button
             onClick={() => setIsProducts(true)}
@@ -53,17 +79,17 @@ const ProductsPage = () => {
             Categories
           </Button>
         </ButtonGroup>
-        <CreateButton />
-      </Flex>
+        <CreateButton handleClick={onOpen} />
+      </Sidebar>
       {isProducts ? (
-        <>
+        <Flex flex={1} m={6} flexDir="column">
           <Grid
-            templateColumns="repeat(5, 1fr)"
-            templateRows="repeat(3, 150px)"
+            templateColumns="repeat(6, 1fr)"
+            templateRows="repeat(4, 130px)"
             gridGap={3}
-            my={6}
+            mb={6}
           >
-            {products.map(({ id, name, image, price }) => (
+            {data?.result?.map(({ id, name, image, price }) => (
               <ProductCard key={id} name={name} src={image} price={price} />
             ))}
           </Grid>
@@ -71,66 +97,46 @@ const ProductsPage = () => {
             <IconButton
               icon={<MdChevronLeft />}
               aria-label="previous list of products"
-              onClick={() => {}}
+              isDisabled={pageQuery <= 1}
+              onClick={() => {
+                setPageQuery((val) => --val);
+              }}
             />
-            {/* Numbered Link to Pages */}
+            {/* Numered Pagination Links */}
             <IconButton
               icon={<MdChevronRight />}
               aria-label="next list of products"
-              onClick={() => {}}
+              isDisabled={data ? pageQuery >= data.totalPage : true}
+              onClick={() => {
+                setPageQuery((val) => ++val);
+              }}
             />
           </HStack>
-        </>
+        </Flex>
       ) : (
-        <TableContainer>
-          <Table variant="striped" colorScheme="#DFD3C3">
-            <Thead>
-              <Tr>
-                <Th>#</Th>
-                <Th>Category Name</Th>
-                <Th>Products</Th>
-                <Th></Th>
-                <Th></Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>1</Td>
-                <Td>Tea Latte</Td>
-                <Td>4</Td>
-                <Td>
-                  <Button>E</Button>
-                </Td>
-                <Td>
-                  <Button>D</Button>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>2</Td>
-                <Td>Shortcake</Td>
-                <Td>3</Td>
-                <Td>
-                  <Button>E</Button>
-                </Td>
-                <Td>
-                  <Button>D</Button>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>3</Td>
-                <Td>Espresso</Td>
-                <Td>5</Td>
-                <Td>
-                  <Button>E</Button>
-                </Td>
-                <Td>
-                  <Button>D</Button>
-                </Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </TableContainer>
+        <StripedTable
+          headArr={[
+            { head: "category name" },
+            { head: "products in category", props: { isNumeric: true } },
+          ]}
+          dataArr={data?.result?.map(({ name, product }) => [
+            { datum: name },
+            { datum: product?.[0]?.count, props: { isNumeric: true } },
+          ])}
+        />
       )}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent as="form" onSubmit={handleSubmit}>
+          <ModalHeader textAlign="center">
+            {isProducts ? "Product" : "Category"}
+          </ModalHeader>
+          <ModalBody></ModalBody>
+          <ModalFooter>
+            <Button type="submit">Confirm</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
@@ -148,3 +154,44 @@ export default ProductsPage;
 // };
 
 // export default ProductsPage;
+
+// const AdminLayout = ({ children }) => {
+//   return (
+//     <>
+//       <Flex w="full" h="full">
+//         <Flex
+//           flexDir="column"
+//           p={4}
+//           w={64}
+//           bgColor="#D0B8A8"
+//           borderRight="solid 1px #85586F"
+//         ></Flex>
+//         <Flex flex={1} flexDir="column" p={6} justifyContent="space-between">
+//           {children}
+//         </Flex>
+//       </Flex>
+//     </>
+//   );
+// };
+
+// export default AdminLayout;
+
+// <TableContainer flex={1} m={6} overflowY="auto">
+//           <Table variant="striped" colorScheme="blackAlpha">
+//             <Thead>
+//               <Tr>
+//                 <Th>#</Th>
+//                 <Th>Category Name</Th>
+//                 <Th>Products in Category</Th>
+//               </Tr>
+//             </Thead>
+//             <Tbody>
+//               {data?.result?.map(({ name, product }, idx) => (
+//                 <TableRow
+//                   key={idx}
+//                   dataObj={{ idx, name, count: product?.[0]?.count }}
+//                 />
+//               ))}
+//             </Tbody>
+//           </Table>
+//         </TableContainer>

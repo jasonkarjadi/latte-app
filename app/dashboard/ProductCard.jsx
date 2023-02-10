@@ -1,22 +1,34 @@
 "use client";
 
-import { Box, GridItem, HStack, IconButton, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  GridItem,
+  HStack,
+  IconButton,
+  Text,
+} from "@chakra-ui/react";
 import NextImage from "next/image";
 import { useState } from "react";
-import { MdEdit, MdDelete } from "react-icons/md";
+import { MdDelete, MdEdit } from "react-icons/md";
 
 const ProductCard = ({ name = "", src = "", price = "" }) => {
   const [isHover, setIsHover] = useState(false);
 
   return (
-    <GridItem pos="relative">
+    <GridItem
+      pos="relative"
+      onMouseOver={() => setIsHover(true)}
+      onMouseOut={() => setIsHover(false)}
+    >
       <NextImage
-        src={`http://${src}`}
+        src={src}
         alt={name}
         fill={true}
+        sizes="16vw"
         style={{ borderRadius: "10px" }}
       />
-      <Box
+      <Flex
         pos="absolute"
         left="0"
         bottom="0"
@@ -27,13 +39,12 @@ const ProductCard = ({ name = "", src = "", price = "" }) => {
         color="#F8EDE3"
         bgColor="rgba(00, 00, 00, 0.2)"
         borderRadius="10px"
-        display="flex"
         flexDir="column"
         justifyContent="space-between"
       >
         <Box>
           <Text>{name}</Text>
-          <Text>Rp{price}</Text>
+          <Text>Rp{price.toLocaleString()}</Text>
         </Box>
         {isHover && (
           <HStack spacing={2} ml="auto">
@@ -51,7 +62,7 @@ const ProductCard = ({ name = "", src = "", price = "" }) => {
             />
           </HStack>
         )}
-      </Box>
+      </Flex>
     </GridItem>
   );
 };
