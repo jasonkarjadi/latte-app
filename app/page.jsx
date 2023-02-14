@@ -17,6 +17,7 @@ import { useState } from "react";
 import { setAccessToken } from "../accessToken";
 import { poppins } from "../fonts";
 import cafeImg from "../public/contactlesspayment.jpg";
+import FormInput from "./FormInput";
 
 const RootPage = () => {
   const [errMsg, setErrMsg] = useState("");
@@ -27,10 +28,7 @@ const RootPage = () => {
     try {
       const res = await fetch("http://localhost:2000/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userLog: e.target.userLog.value,
           password: e.target.password.value,
@@ -40,14 +38,16 @@ const RootPage = () => {
       const { accessToken } = await res.json();
       setAccessToken(accessToken);
       const decoded = jwtDecode(accessToken);
-      router.push(`/dashboard/${decoded.isAdmin ? "admin" : "cashier"}`);
+      router.push(
+        `/dashboard/${decoded.isAdmin ? "admin/products?page=1" : "employee"}`
+      );
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <Flex>
+    <Flex bgColor="white">
       <Box w={96}>
         <NextImage src={cafeImg} alt="point of sale" priority />
       </Box>
@@ -56,29 +56,24 @@ const RootPage = () => {
         w={96}
         p={6}
         textAlign="center"
-        bgColor="white"
-        justifyContent="space-between"
+        justify="space-between"
       >
         <Box>
           <Heading className={poppins.className}>LATTE POS</Heading>
           <Text>Good day, and welcome!</Text>
         </Box>
-        <Box as="form" onSubmit={handleSubmit}>
-          <FormControl>
-            <FormLabel mr="0">
-              <Input
-                type="text"
-                name="userLog"
-                placeholder="Email / Phone Number"
-              />
-            </FormLabel>
-          </FormControl>
-          <FormControl>
-            <FormLabel mr="0" mb={6}>
-              <Input type="password" name="password" placeholder="Password" />
-            </FormLabel>
-          </FormControl>
-          <Button type="submit" px={6} colorScheme="blue">
+        <Box as="form" onSubmit={async (e) => await handleSubmit(e)}>
+          <FormInput
+            props={{ name: "userLog", placeholder: "Email or Phone Number" }}
+          />
+          <FormInput
+            props={{
+              type: "password",
+              name: "password",
+              placeholder: "Password",
+            }}
+          />
+          <Button type="submit" mt={6} px={6} colorScheme="blue">
             Login
           </Button>
         </Box>
