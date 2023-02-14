@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { Button, Heading } from "@chakra-ui/react";
 
 const RootError = ({ error, reset }) => {
   useEffect(() => {
@@ -8,10 +9,12 @@ const RootError = ({ error, reset }) => {
   }, [error]);
 
   return (
-    <div>
-      <h2>Something went wrong!</h2>
-      <button onClick={() => reset()}>Try again</button>
-    </div>
+    <>
+      <Heading>Something went wrong!</Heading>
+      <Button colorScheme="orange" onClick={() => reset()}>
+        Try again
+      </Button>
+    </>
   );
 };
 

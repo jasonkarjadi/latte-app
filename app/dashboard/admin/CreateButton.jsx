@@ -1,10 +1,10 @@
 import { Button, Icon } from "@chakra-ui/react";
 import { MdAdd } from "react-icons/md";
 
-const CreateButton = () => {
+const CreateButton = ({ handleClick }) => {
   return (
     <Button
-      onClick={() => {}}
+      onClick={handleClick}
       colorScheme="orange"
       fontWeight="normal"
       fontSize="small"

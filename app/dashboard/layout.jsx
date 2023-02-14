@@ -59,15 +59,19 @@ const DashboardLayout = ({ children }) => {
           <Heading fontSize="x-large" mx={6} className={poppins.className}>
             LATTE POINT OF SALE
           </Heading>
-          <NavLink href="/dashboard/admin/products" icon={MdCoffee}>
-            Products
-          </NavLink>
-          <NavLink href="/dashboard/admin/employees" icon={MdPerson}>
-            Employees
-          </NavLink>
-          <NavLink href="/dashboard/admin/sales" icon={MdBarChart}>
-            Sales
-          </NavLink>
+          {user?.isAdmin && (
+            <>
+              <NavLink href="/dashboard/admin/products" icon={MdCoffee}>
+                Products
+              </NavLink>
+              <NavLink href="/dashboard/admin/employees" icon={MdPerson}>
+                Employees
+              </NavLink>
+              <NavLink href="/dashboard/admin/sales" icon={MdBarChart}>
+                Sales
+              </NavLink>
+            </>
+          )}
         </HStack>
         <HStack spacing="0">
           <Button

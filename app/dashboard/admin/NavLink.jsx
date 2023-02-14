@@ -1,6 +1,6 @@
 "use client";
 
-import { Link, Icon } from "@chakra-ui/react";
+import { Icon, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -15,7 +15,6 @@ const NavLink = ({ children, href, icon }) => {
       h={14}
       fontWeight="bold"
       bgColor={isActive ? "#F8EDE3" : "transparent"}
-      borderRadius={4}
       display="flex"
       alignItems="center"
       p={4}
