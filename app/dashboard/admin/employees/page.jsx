@@ -1,32 +1,68 @@
 "use client";
 
-import { Box, Table, TableContainer, Th, Thead, Tr } from "@chakra-ui/react";
+import {
+  Table,
+  TableContainer,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import CreateButton from "../CreateButton";
+import FormModal from "../FormModal";
 import Sidebar from "../Sidebar";
-import RoleTable from "./RoleTable";
+import StripedTable from "../StripedTable";
+import { getAccessToken, setAccessToken } from "../../../../accessToken";
 
-const UsersPage = () => {
+const EmployeesPage = () => {
+  const [data, setData] = useState(null);
+  const [selectedData, setSelectedData] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    (async () => {
+      setAccessToken(null);
+      const accessToken = await getAccessToken();
+      try {
+        const res = await fetch(`http://localhost:2000/auth/userList`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const resBody = await res.json();
+        setData(resBody);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
+
   return (
     <>
-      <Sidebar></Sidebar>
-      <TableContainer m={6}>
-        <Table variant="striped">
-          <Thead>
-            <Tr>
-              <Th>#</Th>
-              <Th>Name</Th>
-              <Th>Email</Th>
-              <Th>Phone Number</Th>
-            </Tr>
-          </Thead>
-          <RoleTable></RoleTable>
-          <RoleTable></RoleTable>
-          <RoleTable></RoleTable>
-          <RoleTable></RoleTable>
-          <RoleTable></RoleTable>
-        </Table>
-      </TableContainer>
+      <Sidebar>
+        <CreateButton handleClick={onOpen} />
+      </Sidebar>
+      <StripedTable
+        headArr={[
+          { head: "name" },
+          { head: "email" },
+          { head: "phone number" },
+        ]}
+        dataArr={data?.result?.map(({ name, email, phone_number }) => [
+          { datum: name },
+          { datum: email },
+          { datum: phone_number },
+        ])}
+      />
+      <FormModal
+        isOpen={isOpen}
+        onClose={onClose}
+        type="employee"
+        selectedData={selectedData}
+      />
     </>
   );
 };
 
-export default UsersPage;
+export default EmployeesPage;
