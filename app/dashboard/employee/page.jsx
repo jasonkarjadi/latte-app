@@ -57,6 +57,7 @@ const CashierPage = () => {
         }),
       });
       setItems({});
+      alert("Transaction successful!");
     } catch (err) {
       console.error(err);
     }
