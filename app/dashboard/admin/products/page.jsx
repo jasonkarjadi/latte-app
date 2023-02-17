@@ -65,7 +65,12 @@ const ProductsPage = () => {
             Categories
           </Button>
         </ButtonGroup>
-        <CreateButton handleClick={onOpen} />
+        <CreateButton
+          handleClick={() => {
+            setSelectedData(null);
+            onOpen();
+          }}
+        />
       </Sidebar>
       {isProducts ? (
         <Flex flex={1} m={6} flexDir="column">

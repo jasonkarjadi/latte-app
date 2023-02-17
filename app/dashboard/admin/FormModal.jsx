@@ -21,7 +21,7 @@ import FormInput from "../../FormInput";
 
 const FormModal = ({ isOpen, onClose, type, selectedData }) => {
   const [categories, setCategories] = useState([]);
-  const [preview, setPreview] = useState(selectedData?.image || null);
+  const [preview, setPreview] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -70,7 +70,7 @@ const FormModal = ({ isOpen, onClose, type, selectedData }) => {
       const route = type === "employee" ? "auth/register" : `${type}/create`;
       const contentType =
         type === "product" ? "multipart/formdata" : "application/json";
-      const res = await fetch(`http://localhost:2000/${route}`, {
+      await fetch(`http://localhost:2000/${route}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -121,11 +121,11 @@ const FormModal = ({ isOpen, onClose, type, selectedData }) => {
                   borderRadius="6px"
                 >
                   <NextImage
-                    src={preview || cameraSvg}
+                    src={preview || selectedData?.image || cameraSvg}
                     alt="preview"
-                    width={preview ? undefined : 56}
-                    height={preview ? undefined : 56}
-                    fill={preview}
+                    width={preview || selectedData?.image ? undefined : 56}
+                    height={preview || selectedData?.image ? undefined : 56}
+                    fill={preview || selectedData?.image}
                     sizes="26vw"
                     priority
                   />
@@ -137,7 +137,7 @@ const FormModal = ({ isOpen, onClose, type, selectedData }) => {
             props={{
               name: "name",
               placeholder: "Name",
-              value: selectedData?.name,
+              defaultValue: selectedData?.name,
             }}
             addOn={<Icon as={MdDriveFileRenameOutline} />}
           />
@@ -147,12 +147,17 @@ const FormModal = ({ isOpen, onClose, type, selectedData }) => {
                 props={{
                   name: "price",
                   placeholder: "Price",
-                  value: selectedData?.price,
+                  defaultValue: selectedData?.price,
                 }}
                 addOn="Rp"
               />
               <FormInput>
-                <Select name="category" placeholder="Category" cursor="pointer">
+                <Select
+                  name="category"
+                  placeholder="Category"
+                  cursor="pointer"
+                  defaultValue={selectedData?.CategoryId}
+                >
                   {categories?.map(({ id, name }) => (
                     <option key={id} value={id}>
                       {name}
@@ -169,7 +174,7 @@ const FormModal = ({ isOpen, onClose, type, selectedData }) => {
                   type: "email",
                   name: "email",
                   placeholder: "Email",
-                  value: selectedData?.email,
+                  defaultValue: selectedData?.email,
                 }}
                 addOn={<Icon as={MdEmail} />}
               />
@@ -177,7 +182,7 @@ const FormModal = ({ isOpen, onClose, type, selectedData }) => {
                 props={{
                   name: "phone_number",
                   placeholder: "Phone Number",
-                  value: selectedData?.phone_number,
+                  defaultValue: selectedData?.phone_number,
                 }}
                 addOn={<Icon as={MdPhone} />}
               />
