@@ -9,6 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import NextImage from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { getAccessToken, setAccessToken } from "../../accessToken";
@@ -16,12 +17,13 @@ import { getAccessToken, setAccessToken } from "../../accessToken";
 const ProductCard = ({ datum, setSelectedData, onOpen }) => {
   const [isHover, setIsHover] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
+  const router = useRouter();
 
   const handleDelete = async () => {
     setAccessToken(null);
     const accessToken = await getAccessToken();
     try {
-      await fetch(`http://localhost:2000/product/delete/${data.id}`, {
+      await fetch(`http://localhost:2000/product/delete/${datum.id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -29,6 +31,8 @@ const ProductCard = ({ datum, setSelectedData, onOpen }) => {
       });
     } catch (err) {
       console.error(err);
+    } finally {
+      router.refresh();
     }
   };
 
