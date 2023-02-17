@@ -20,7 +20,26 @@ import cameraSvg from "../../../public/camera.svg";
 import FormInput from "../../FormInput";
 
 const FormModal = ({ isOpen, onClose, type, selectedData }) => {
+  const [categories, setCategories] = useState([]);
   const [preview, setPreview] = useState(selectedData?.image || null);
+
+  useEffect(() => {
+    (async () => {
+      setAccessToken(null);
+      const accessToken = await getAccessToken();
+      try {
+        const res = await fetch(`http://localhost:2000/category/list`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        const resBody = await res.json();
+        setCategories(resBody.result);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     if (!isOpen && preview) {
@@ -134,8 +153,10 @@ const FormModal = ({ isOpen, onClose, type, selectedData }) => {
               />
               <FormInput>
                 <Select name="category" placeholder="Category" cursor="pointer">
-                  {[]?.map((val, idx) => (
-                    <option key={idx}>{val}</option>
+                  {categories?.map(({ id, name }) => (
+                    <option key={id} value={id}>
+                      {name}
+                    </option>
                   ))}
                 </Select>
               </FormInput>
