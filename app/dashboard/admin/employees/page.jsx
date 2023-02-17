@@ -1,19 +1,12 @@
 "use client";
 
-import {
-  Table,
-  TableContainer,
-  Th,
-  Thead,
-  Tr,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { getAccessToken, setAccessToken } from "../../../../accessToken";
 import CreateButton from "../CreateButton";
 import FormModal from "../FormModal";
 import Sidebar from "../Sidebar";
 import StripedTable from "../StripedTable";
-import { getAccessToken, setAccessToken } from "../../../../accessToken";
 
 const EmployeesPage = () => {
   const [data, setData] = useState(null);
