@@ -45,6 +45,7 @@ const CashierPage = () => {
         method: "POST",
         headers: {
           Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           grand_total: total,

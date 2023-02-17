@@ -41,8 +41,9 @@ const DashboardLayout = ({ children }) => {
       });
     } catch (err) {
       console.error(err);
+    } finally {
+      router.refresh();
     }
-    router.refresh();
   };
 
   return (
