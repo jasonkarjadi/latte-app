@@ -1,7 +1,6 @@
 "use client";
 
 import { Button, Flex, StackDivider, VStack } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getAccessToken, setAccessToken } from "../../../accessToken";
 import MenuGrid from "./MenuGrid";
@@ -11,7 +10,6 @@ const CashierPage = () => {
   const [data, setData] = useState(null);
   const [items, setItems] = useState({});
   const [total, setTotal] = useState(null);
-  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -32,7 +30,6 @@ const CashierPage = () => {
   }, []);
 
   useEffect(() => {
-    console.log(items);
     const prices = Object.values(items).map(({ price, qty }) => price * qty);
     const grandTotal = prices[0]
       ? prices.reduce((prev, next) => prev + next)
@@ -40,9 +37,7 @@ const CashierPage = () => {
     setTotal(grandTotal);
   }, [items]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!total) return;
+  const handleClick = async () => {
     setAccessToken(null);
     const accessToken = await getAccessToken();
     try {
@@ -60,10 +55,9 @@ const CashierPage = () => {
           })),
         }),
       });
+      setItems({});
     } catch (err) {
       console.error(err);
-    } finally {
-      router.refresh();
     }
   };
 
@@ -96,7 +90,8 @@ const CashierPage = () => {
           colorScheme="blue"
           mt={3}
           h={14}
-          onClick={async () => await handleSubmit()}
+          isDisabled={!total}
+          onClick={async () => await handleClick()}
         >
           Confirm {total && `Rp${total.toLocaleString()}`}
         </Button>
