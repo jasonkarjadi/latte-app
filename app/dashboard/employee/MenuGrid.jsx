@@ -90,7 +90,7 @@ const MenuGrid = ({ categories, itemsState }) => {
                         const { [id]: omit, ...rest } = val;
                         return rest;
                       } else {
-                        return { ...val, [id]: { name, price } };
+                        return { ...val, [id]: { name, price, qty: 1 } };
                       }
                     })
                   }

@@ -12,15 +12,21 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const OrderItem = ({ name, price }) => {
+const OrderItem = ({ vals, handleChange }) => {
   return (
     <Flex justify="space-between" w="full">
       <Box fontSize="small">
-        <Text>{name}</Text>
-        <Text>Rp{price?.toLocaleString()}</Text>
+        <Text>{vals.name}</Text>
+        <Text>Rp{vals.price.toLocaleString()}</Text>
       </Box>
       <FormLabel mr="0">
-        <NumberInput defaultValue={1} min={1} max={99} w={20}>
+        <NumberInput
+          value={vals.qty}
+          min={1}
+          max={99}
+          w={20}
+          onChange={handleChange}
+        >
           <NumberInputField />
           <NumberInputStepper>
             <NumberIncrementStepper />

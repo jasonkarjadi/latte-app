@@ -10,6 +10,7 @@ import OrderItem from "./OrderItem";
 const CashierPage = () => {
   const [data, setData] = useState(null);
   const [items, setItems] = useState({});
+  const [total, setTotal] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -30,8 +31,18 @@ const CashierPage = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    console.log(items);
+    const prices = Object.values(items).map(({ price, qty }) => price * qty);
+    const grandTotal = prices[0]
+      ? prices.reduce((prev, next) => prev + next)
+      : null;
+    setTotal(grandTotal);
+  }, [items]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!total) return;
     setAccessToken(null);
     const accessToken = await getAccessToken();
     try {
@@ -40,7 +51,14 @@ const CashierPage = () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          grand_total: total,
+          data: Object.entries(items).map(([id, { price, qty }]) => ({
+            id,
+            sub_total: price * qty,
+            qty,
+          })),
+        }),
       });
     } catch (err) {
       console.error(err);
@@ -61,8 +79,17 @@ const CashierPage = () => {
           divider={<StackDivider />}
           p={6}
         >
-          {Object.entries(items)?.map(([id, { name, price }]) => (
-            <OrderItem key={id} name={name} price={price} />
+          {Object.entries(items)?.map(([id, vals]) => (
+            <OrderItem
+              key={id}
+              vals={vals}
+              handleChange={(val) =>
+                setItems((itms) => ({
+                  ...itms,
+                  [id]: { ...itms[id], qty: parseInt(val) },
+                }))
+              }
+            />
           ))}
         </VStack>
         <Button
@@ -71,7 +98,7 @@ const CashierPage = () => {
           h={14}
           onClick={async () => await handleSubmit()}
         >
-          Confirm
+          Confirm {total && `Rp${total.toLocaleString()}`}
         </Button>
       </Flex>
     </>
