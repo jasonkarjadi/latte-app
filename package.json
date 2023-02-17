@@ -1,9 +1,9 @@
 {
   "name": "latte-app",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "web app for point of sale",
   "main": "index.js",
-  "private": "true",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -15,11 +15,11 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@chakra-ui/react": "^2.5.0",
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
+    "@chakra-ui/react": "^2.5.1",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@next/font": "^13.1.6",
-    "framer-motion": "^9.0.2",
+    "framer-motion": "^9.0.4",
     "jwt-decode": "^3.1.2",
     "next": "^13.1.6",
     "react": "^18.2.0",
